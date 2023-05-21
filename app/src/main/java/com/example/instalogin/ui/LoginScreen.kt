@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,39 @@ fun LoginScreen() {
     ) {
         Header(Modifier.align(Alignment.TopEnd))
         Body(Modifier.align(Alignment.Center))
+        Footer(Modifier.align(Alignment.BottomCenter))
+    }
+}
+
+@Composable
+fun Footer(modifier: Modifier) {
+    Column(modifier = modifier) {
+        Divider(
+            modifier = Modifier
+                .defaultMinSize()
+                .background(Color(0xFFF9F9F9))
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        SignUpTextButton(modifier)
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
+
+@Composable
+fun SignUpTextButton(modifier: Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = "Don't have an account? ",
+            color = Color(0xFFB5B5B5)
+        )
+        Text(
+            text = " Sign Up",
+            color = Color(0xFF4EA8E9)
+        )
     }
 }
 

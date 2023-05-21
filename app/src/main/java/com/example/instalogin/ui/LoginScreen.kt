@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -66,6 +67,30 @@ fun Body(modifier: Modifier) {
         LoginButton(isLoginEnable)
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
+        Spacer(modifier = Modifier.size(24.dp))
+        SocialLogin()
+    }
+}
+
+@Composable
+fun SocialLogin() {
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.fb),
+            contentDescription = "Social login fb",
+            modifier = Modifier.size(16.dp)
+        )
+        Text(
+            text = "Continue as JAVA90",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF4EA8E9),
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
     }
 }
 

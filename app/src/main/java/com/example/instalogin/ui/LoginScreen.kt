@@ -1,6 +1,7 @@
 package com.example.instalogin.ui
 
 import android.app.Activity
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -96,18 +97,24 @@ fun SignUpTextButton(modifier: Modifier) {
 fun Body(modifier: Modifier) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-    var isLoginEnable by rememberSaveable { mutableStateOf(false) }
+    var isLoginButtonEnabled by rememberSaveable { mutableStateOf(false) }
     
     Column(modifier = modifier) {
         ImageLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        EmailTextField(email) { email = it }
+        EmailTextField(email) {
+            email = it
+            isLoginButtonEnabled = enabledLogin(email, password)
+        }
         Spacer(modifier = Modifier.size(8.dp))
-        PasswordTextField(password = password) { password = it }
+        PasswordTextField(password = password) {
+            password = it
+            isLoginButtonEnabled = enabledLogin(email, password)
+        }
         Spacer(modifier = Modifier.size(8.dp))
         ForgotPassWordTextView(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
-        LoginButton(isLoginEnable)
+        LoginButton(isLoginButtonEnabled)
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
         Spacer(modifier = Modifier.size(24.dp))
@@ -180,6 +187,10 @@ fun LoginButton(loginEnable: Boolean) {
     ) {
         Text(text = "Log In")
     }
+}
+
+fun enabledLogin(email: String, password: String) : Boolean {
+    return Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 6
 }
 
 @Composable

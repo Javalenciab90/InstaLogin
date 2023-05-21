@@ -2,13 +2,19 @@ package com.example.instalogin.ui
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -46,13 +52,55 @@ fun LoginScreen() {
 fun Body(modifier: Modifier) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var isLoginEnable by rememberSaveable { mutableStateOf(false) }
+    
     Column(modifier = modifier) {
-        ImageLogo()
+        ImageLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
         EmailTextField(email) { email = it }
-        Spacer(modifier = Modifier.size(4.dp))
+        Spacer(modifier = Modifier.size(8.dp))
         PasswordTextField(password = password) { password = it }
+        Spacer(modifier = Modifier.size(8.dp))
         ForgotPassWordTextView(Modifier.align(Alignment.End))
+        Spacer(modifier = Modifier.size(16.dp))
+        LoginButton(isLoginEnable)
+        Spacer(modifier = Modifier.size(16.dp))
+        LoginDivider()
+    }
+}
+
+@Composable
+fun LoginDivider() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Divider(
+            modifier = Modifier
+                .defaultMinSize()
+                .background(Color(0xFFF9F9F9))
+                .weight(1f)
+        )
+        Text(
+            text = "OR",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFFB5B5B5),
+            modifier = Modifier.padding(horizontal = 6.dp)
+        )
+        Divider(
+            modifier = Modifier
+                .defaultMinSize()
+                .background(Color(0xFFF9F9F9))
+                .weight(1f)
+        )
+    }
+}
+
+@Composable
+fun LoginButton(loginEnable: Boolean) {
+    Button(onClick = {  }, enabled = loginEnable, modifier = Modifier.fillMaxWidth()) {
+        Text(text = "Log In")
     }
 }
 
@@ -72,7 +120,8 @@ fun ForgotPassWordTextView(modifier: Modifier) {
 fun PasswordTextField(password: String, onTextChanged: (String) -> Unit) {
     TextField(
         value = password,
-        onValueChange = { text -> onTextChanged(text) }
+        onValueChange = { text -> onTextChanged(text) },
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
@@ -80,15 +129,17 @@ fun PasswordTextField(password: String, onTextChanged: (String) -> Unit) {
 fun EmailTextField(email: String, onTextChanged: (String) -> Unit) {
     TextField(
         value = email,
-        onValueChange = { text -> onTextChanged(text) }
+        onValueChange = { text -> onTextChanged(text) },
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun ImageLogo() {
+fun ImageLogo(modifier: Modifier) {
     Image(
         painter = painterResource(id = R.drawable.insta),
-        contentDescription = "logo"
+        contentDescription = "logo",
+        modifier = modifier
     )
 }
 

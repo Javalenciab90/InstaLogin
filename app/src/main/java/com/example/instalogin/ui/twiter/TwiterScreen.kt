@@ -1,6 +1,7 @@
 package com.example.instalogin.ui.twiter
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +13,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,11 +28,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.instalogin.R
 
-@Preview
 @Composable
 fun TwitterCard() {
+    var chat by remember { mutableStateOf(false) }
+    var like by remember { mutableStateOf(false) }
+    var rt by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +44,7 @@ fun TwitterCard() {
     ) {
         CircularImage()
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp)
         ) {
@@ -66,13 +75,66 @@ fun TwitterCard() {
                     .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
+
+            Row(
+                modifier = Modifier
+                    .padding(top = 16.dp)
             ) {
-                SocialIcon()
-                SocialIcon()
-                SocialIcon()
+                SocialIcon(
+                    unselectedIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_chat),
+                            contentDescription = ""
+                        )
+                    },
+                    selectedIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_chat_filled),
+                            contentDescription = "",
+                            tint = Color(0xFF7E8B98)
+                        )
+                    },
+                    isSelected = chat,
+                    onItemSelected = { chat = !chat },
+                    modifier = Modifier.weight(1f)
+                )
+
+                SocialIcon(
+                    unselectedIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_rt),
+                            contentDescription = ""
+                        )
+                    },
+                    selectedIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_rt),
+                            contentDescription = "",
+                            tint = Color(0xFF4CAF50)
+                        )
+                    },
+                    isSelected = rt,
+                    onItemSelected = { rt = !rt },
+                    modifier = Modifier.weight(1f)
+                )
+                SocialIcon(
+                    unselectedIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_like),
+                            contentDescription = ""
+                        )
+                    },
+                    selectedIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_like_filled),
+                            contentDescription = "",
+                            tint = Color(0xFFF44336)
+                        )
+                    },
+                    isSelected = like,
+                    onItemSelected = { like = !like },
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     }
@@ -118,25 +180,37 @@ fun TextBody(text: String, modifier: Modifier) {
 }
 
 @Composable
-fun SocialIcon() {
-    IconButton(
-        onClick = { /*TODO*/ }
+fun SocialIcon(
+    unselectedIcon: @Composable () -> Unit,
+    selectedIcon: @Composable () -> Unit,
+    isSelected: Boolean,
+    onItemSelected: () -> Unit,
+    modifier: Modifier
+) {
+    val defaultValue = 1
+    Row(
+        modifier = modifier.clickable { onItemSelected() },
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            tint = Color(0xFF7E8B98),
-            painter = painterResource(id = R.drawable.ic_chat),
-            contentDescription = "comments"
+        if(isSelected) selectedIcon() else unselectedIcon()
+
+        Text(
+            text = if(isSelected) (defaultValue + 1).toString() else defaultValue.toString(),
+            color = Color(0xFF7E8B98),
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 4.dp)
         )
     }
 }
 
+@Preview
 @Composable
 fun TwitDivider() {
     Divider(
-        color = Color(0xFF7E8B98),
+        color = Color(0xFFA5A5A5),
         modifier = Modifier
             .padding(top = 8.dp)
+            .height(0.5.dp)
             .fillMaxWidth()
-
     )
 }
